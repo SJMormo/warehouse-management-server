@@ -34,6 +34,19 @@ async function run() {
             const query = { _id: ObjectId(id) };
             const inventory = await inventoryCollection.findOne(query);
             res.send(inventory);
+        });
+
+        // update quantity 
+        app.put('/updateQuantity/:id', async (req, res) => {
+            const id = req.params.id;
+            const updatedQuantity = req.body;
+            const filter = { _id: ObjectId(id) };
+            const options = { upsert: true };
+            const updatedDoc = {
+                $set: updatedQuantity
+            };
+            const result = await inventoryCollection.updateOne(filter, updatedDoc, options);
+            res.send(result);
         })
     }
     finally {
