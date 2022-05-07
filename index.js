@@ -62,7 +62,17 @@ async function run() {
             const newInventory = req.body;
             const result = await inventoryCollection.insertOne(newInventory);
             res.send(result);
-        })
+        });
+
+        // filtered getItem
+        app.get('/inventoryfilter', async (req, res) => {
+            const email = req.query.email;
+            console.log(email);
+            const query = { email: email };
+            const cursor = inventoryCollection.find(query);
+            const inventory = await cursor.toArray();
+            res.send(inventory);
+        });
     }
     finally {
 
